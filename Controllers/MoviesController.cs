@@ -20,14 +20,32 @@ namespace MvcMovie.Controllers
         }
 
         // GET: Movies
-        public async Task<IActionResult> Index(string movieGenre, string searchString)
+        public async Task<IActionResult> Index(string movieGenre, string searchString, string sortOrder)
         {
-            // Use LINQ to get list of genres.
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewBag.TitleSortParm = sortOrder == "Title" ? "title_desc" : "Title";
+
             IQueryable<string> genreQuery = from m in _context.Movie
                                             orderby m.Genre
                                             select m.Genre;
             var movies = from m in _context.Movie
                         select m;
+
+            switch (sortOrder)
+            {
+                case "Title":
+                    movies = movies.OrderBy(m => m.Title);
+                    break;
+                case "title_desc":
+                    movies = movies.OrderByDescending(m => m.Title);
+                    break;
+                case "Date":
+                    movies = movies.OrderBy(m => m.ReleaseDate);
+                    break;
+                default:
+                    movies = movies.OrderByDescending(m => m.ReleaseDate);
+                    break;
+            }
 
             if (!string.IsNullOrEmpty(searchString))
             {
