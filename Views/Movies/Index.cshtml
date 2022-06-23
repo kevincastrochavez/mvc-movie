@@ -4,11 +4,13 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<h1>Church Movies</h1>
+<div class="create-container">
+    <h1>Church Movies</h1>
 
-<p>
-    <a asp-action="Create">Create a New Movie</a>
-</p>
+    <p>
+        <a asp-action="Create" id="create-btn">Create a New Movie <i class="fa-solid fa-plus"></i></a>
+    </p>
+</div>
 
 <form asp-controller="Movies" asp-action="Index" method="get">
     <p>
